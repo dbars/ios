@@ -28,6 +28,19 @@ jobs:
           xcodebuild -version
           xcodebuild -showsdks
 
+      - name: Check web library and import behavior
+        run: |
+          node --check web-preview/app.js
+          node --test tests/library.test.cjs
+
+      - name: Upload standalone web application
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Collections-web-preview
+          path: web-preview/
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Build for iOS Simulator
         run: |
           set -euo pipefail

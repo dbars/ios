@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Collections — Votre bibliothèque Instagram</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="library.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">▱</span> Collections<span class="brand-dot">.</span></a>
+      <p class="eyebrow sidebar-caption">VOTRE ESPACE PERSONNEL</p>
+      <button class="library-nav" id="all-library"><span aria-hidden="true">▦</span> Ma bibliothèque <span id="nav-count">0</span></button>
+      <div class="sidebar-bottom"><span class="privacy-mark" aria-hidden="true">◇</span><strong>Vos contenus, chez vous.</strong><p>Votre bibliothèque est conservée dans ce navigateur. Aucun compte à connecter.</p></div>
+    </aside>
+    <main>
+      <header class="topbar"><span class="crumb">Ma bibliothèque</span><span class="local-badge"><span></span> Stockage local</span></header>
+      <section class="heading">
+        <div><p class="eyebrow">VOTRE BIBLIOTHÈQUE INSTAGRAM</p><h1>Vos idées, <em>bien rangées.</em></h1><p class="intro">Retrouvez ce qui vous inspire. Faites-en quelque chose.</p></div>
+        <button class="primary" id="import-main"><span aria-hidden="true">↓</span> Importer mon export</button>
+      </section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section class="stats" aria-label="Résumé de la bibliothèque">
+        <div><span class="stat-icon violet" aria-hidden="true">▱</span><div><strong id="total-count">0</strong><span>contenus enregistrés</span></div></div>
+        <div><span class="stat-icon peach" aria-hidden="true">◈</span><div><strong id="theme-count">0</strong><span>thèmes utilisés</span></div></div>
+        <div><span class="stat-icon green" aria-hidden="true">⌁</span><div><strong id="pending-count">0</strong><span>contenus à classer</span></div></div>
+      </section>
+      <section class="library-section" aria-labelledby="library-title">
+        <div class="library-toolbar"><h2 id="library-title">Mes contenus <span id="result-count">0</span></h2><div class="tools"><button class="secondary" id="backup">Sauvegarder</button><button class="secondary" id="add"><span aria-hidden="true">＋</span> Ajouter un lien</button></div></div>
+        <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Rechercher un titre, un thème, une note…" aria-label="Rechercher dans la bibliothèque"></label>
+        <nav class="themes" id="themes" aria-label="Filtrer par thème"></nav>
+        <div class="empty" id="empty">
+          <div class="empty-illustration" aria-hidden="true"><span>▱</span><i>＋</i></div>
+          <h3 id="empty-title">Toutes vos inspirations, au même endroit.</h3>
+          <p id="empty-description">Importez les publications enregistrées de votre export Instagram,<br> puis donnez à chaque idée le thème qui lui ressemble.</p>
+          <div id="empty-actions"><button class="primary" id="import-empty">Importer un fichier JSON <span aria-hidden="true">↗</span></button><button class="text-button" id="help">Comment obtenir mon export ?</button></div>
+          <button class="secondary" id="reset-filter" hidden>Réinitialiser les filtres</button>
+        </div>
+        <div class="cards" id="cards"></div>
+      </section>
+      <footer>Les publications s’ouvrent sur Instagram. Leur accès dépend de votre compte.<span>Aperçu web · Collections</span></footer>
+    </main>
+  </div>
+  <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <dialog id="editor" aria-labelledby="editor-title">
+    <form id="editor-form">
+      <div class="dialog-heading"><div><p class="eyebrow">UNE NOUVELLE INSPIRATION</p><h2 id="editor-title">Ajouter un contenu</h2></div><button class="icon-button" type="button" id="close-editor" aria-label="Fermer">×</button></div>
+      <label>Lien Instagram<input name="url" id="content-url" required placeholder="https://www.instagram.com/p/…" type="text" inputmode="url" autocomplete="off"></label>
+      <label>Titre<input name="title" id="content-title" maxlength="500" placeholder="Donnez un nom à cette idée"></label>
+      <label>Thème<input name="theme" id="content-theme" list="theme-options" required maxlength="100" placeholder="À classer"><datalist id="theme-options"></datalist></label>
+      <label>Note personnelle<textarea name="note" id="content-note" maxlength="10000" rows="3" placeholder="Ce que vous voulez retenir…"></textarea></label>
+      <p id="editor-error" class="form-error" role="alert" hidden></p>
+      <p class="dialog-note">Aucun contenu n’est téléchargé. Le lien et votre note sont conservés localement.</p>
+      <div class="dialog-actions"><button class="secondary" type="button" id="cancel-editor">Annuler</button><button class="primary" type="submit">Enregistrer</button></div>
+    </form>
+  </dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-heading"><h2 id="help-title">Obtenir votre export Instagram</h2><button class="icon-button" id="close-help" aria-label="Fermer">×</button></div>
+    <ol><li>Dans Instagram : <strong>Profil → ☰ → Espace Comptes</strong>.</li><li>Ouvrez <strong>Vos informations et autorisations → Exporter vos informations</strong> (ou « Télécharger vos informations »).</li><li>Choisissez votre compte, l’export vers un appareil et uniquement les <strong>contenus enregistrés</strong>.</li><li>Sélectionnez le format <strong>JSON</strong> et la période <strong>Depuis le début</strong>, puis demandez l’export.</li><li>Une fois prêt, téléchargez le ZIP, décompressez-le et importez le fichier des publications enregistrées, souvent <strong>saved_posts.json</strong>.</li></ol>
+    <p class="dialog-note">Les intitulés et le format peuvent varier. Importez le fichier JSON, pas le ZIP complet. Votre export est lu dans votre navigateur, sans être envoyé à un serveur.</p>
+    <button class="primary" id="help-import">J’ai mon fichier JSON</button>
+  </dialog>
+  <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Supprimer ce contenu ?</h2><p>Le lien sera retiré de Collections. La publication et vos enregistrements Instagram ne seront pas modifiés.</p><div class="dialog-actions"><button class="secondary" id="cancel-delete">Annuler</button><button class="danger" id="confirm-delete">Supprimer</button></div></dialog>
+</body>
+</html>
